@@ -1,0 +1,11 @@
+# Install Flask-Migrate
+pip install Flask-Migrate
+
+# Initialize migrations folder
+flask db init
+
+# Create migration script
+flask db migrate -m "Initial migration"
+
+# Apply migration to DB
+flask db upgrade
