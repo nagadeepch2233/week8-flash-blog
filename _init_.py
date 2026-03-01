@@ -1,2 +1,34 @@
-from flask import Blueprint
-auth = Blueprint('auth', __name__, template_folder='../../templates/auth')
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from config import Config
+
+db = SQLAlchemy()
+login_manager = LoginManager()
+
+login_manager.login_view = "auth.login"
+login_manager.login_message_category = "info"
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    from app.models import User, Post, Comment
+
+    from app.auth.routes import auth
+    from app.main.routes import main
+    from app.posts.routes import posts
+    from app.comments.routes import comments
+
+    app.register_blueprint(auth)
+    app.register_blueprint(main)
+    app.register_blueprint(posts)
+    app.register_blueprint(comments)
+
+    with app.app_context():
+        db.create_all()
+
+    return app
