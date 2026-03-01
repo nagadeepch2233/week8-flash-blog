@@ -1,0 +1,8 @@
+<!-- CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<!-- JS -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<!-- Images -->
+<img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="Image">
