@@ -1,0 +1,1 @@
+<img src="{{ url_for('static', filename='images/placeholder.png') }}" alt="Placeholder" class="img-fluid">
