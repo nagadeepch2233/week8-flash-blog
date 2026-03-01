@@ -6,6 +6,4 @@ A modular Flask blog application with:
 - Comment System
 - SQLite Database
 
-# Run Project
-pip install -r requirements.txt
-python run.py
+
