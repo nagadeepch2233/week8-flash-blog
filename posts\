@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+        <small>By {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+        <hr>
+
+        {% if current_user.is_authenticated and current_user.id == post.user_id %}
+        <a href="{{ url_for('posts.edit_post', post_id=post.id) }}" class="btn btn-warning btn-sm">Edit</a>
+        <form method="POST" action="{{ url_for('posts.delete_post', post_id=post.id) }}" style="display:inline;">
+            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+        {% endif %}
+
+        <hr>
+        <h4>Comments</h4>
+
+        {% for comment in comments %}
+        <div class="comment-box">
+            <p>{{ comment.content }}</p>
+            <small>By {{ comment.author.username }} on {{ comment.date_posted.strftime('%Y-%m-%d') }}</small>
+            {% if current_user.is_authenticated and comment.user_id == current_user.id %}
+            <form method="POST" action="{{ url_for('comments.delete_comment', comment_id=comment.id) }}">
+                <button class="btn btn-sm btn-danger mt-1">Delete</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if current_user.is_authenticated %}
+        <form method="POST" action="{{ url_for('comments.add_comment', post_id=post.id) }}">
+            {{ form.hidden_tag() }}
+            {{ form.content(class="form-control", rows="3") }} <br>
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+        {% else %}
+        <p><a href="{{ url_for('auth.login') }}">Login</a> to comment.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
